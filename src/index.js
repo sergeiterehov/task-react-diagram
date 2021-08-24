@@ -1,17 +1,38 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { fetchDashboard } from './api';
+import { Diagram } from './Diagram';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+
+const Dashboard = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [dashboard, setDashboard] = useState();
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        fetchDashboard()
+            .then(setDashboard)
+            .catch(() => setDashboard(undefined))
+            .finally(() => setIsLoading(false));
+    }, []);
+
+    if (isLoading) return (<div>Загрузка...</div>);
+
+    return (
+        <div className="dashboard">
+            {dashboard.widgets.map((widget) => {
+                return (
+                    <div key={widget.id} className="widget">
+                        <Diagram widget={widget} />
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+	<Dashboard />,
+  document.querySelector("#root"),
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
