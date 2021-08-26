@@ -4,9 +4,11 @@ import { fetchDashboard } from './api';
 import { Diagram } from './Diagram';
 import './index.css';
 
+
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [dashboard, setDashboard] = useState();
+   
 
     useEffect(() => {
         setIsLoading(true);
@@ -24,7 +26,11 @@ const Dashboard = () => {
             {dashboard.widgets.map((widget) => {
                 return (
                     <div key={widget.id} className="widget">
-                        <Diagram widget={widget} />
+                     
+
+                        <Diagram widget={widget}   />
+
+                     
                     </div>
                 );
             })}
